@@ -1,0 +1,292 @@
+<body class="bg-light">
+    <div class="container">
+        <div class="card shadow p-4 animate__animated animate__fadeIn">
+            <form #userForm="ngForm" (submit)="updateAdmin()" enctype="multipart/form-data">
+                <div class="col-md-12">
+                    <div class="row">
+                        <!-- Profile Image Section -->
+                        <div
+                            class="col-md-4 text-center p-3 bg-light shadow rounded animate__animated animate__fadeInLeft">
+                            <div class="col-md-12">
+                                <form (submit)="UpdateProfile(); $event.preventDefault()">
+                                    <div class="profile-img" style="height: 250px; width: 300px;">
+                                        <img *ngIf="!loggedInAdminImage"
+                                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKlIcH0Q1e2QDuzvM94CnN3vdzXrvebSHNeQ&s"
+                                            alt="User Profile" class="img-fluid shadow-sm" />
+                                        <img [src]="loggedInAdminImage" alt="User Profile"
+                                            class="img-fluid shadow-sm" />
+
+                                        <div
+                                            class="file btn btn-lg btn-primary animate__animated animate__pulse animate__infinite animate__slower">
+                                            <i class="fas fa-camera me-2"></i> Select Photo
+                                            <input type="file" class="form-control" id="fileInput" name="user_profile"
+                                                (change)="onFileSelect($event)">
+                                        </div>
+                                    </div>
+
+                                    <!-- Display selected file name -->
+                                    <div *ngIf="selectedImageName" class="mt-2 text-success">
+                                        <strong>Selected File:</strong> {{ selectedImageName }}
+                                    </div>
+                                    <br>
+                                    <button type="submit"
+                                        class="btn btn-warning animate__animated animate__pulse animate__infinite animate__slow">
+                                        <i class="bi bi-check-circle me-2"></i> Save Profile
+                                    </button>
+                                </form>
+
+                            </div>
+                        </div>
+
+                        <!-- Personal Information Section -->
+                        <div class="col-md-8 text-center float-end bg-light animate__animated animate__fadeInRight">
+                            <div class="card widget-card border-light shadow-sm">
+                                <div class="card-body p-4">
+                                    <ul class="nav nav-tabs" id="profileTab" role="tablist">
+                                        <li class="nav-item" role="presentation">
+                                            <button class="bg-warning nav-link text-dark ml-1 mt-1 active"
+                                                id="overview-tab" data-bs-toggle="tab"
+                                                data-bs-target="#overview-tab-pane" type="button" role="tab"
+                                                aria-controls="overview-tab-pane" aria-selected="true">
+                                                <i class="fas fa-user-circle me-2"></i> Overview
+                                            </button>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <button class="bg-warning text-dark nav-link ml-1 mt-1" id="password-tab"
+                                                data-bs-toggle="tab" data-bs-target="#password-tab-pane" type="button"
+                                                role="tab" aria-controls="password-tab-pane" aria-selected="false">
+                                                <i class="fas fa-key me-2"></i> Password
+                                            </button>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <button class="text-dark bg-warning nav-link ml-1 mt-1" type="button"
+                                                role="tab" (click)="logout()">
+                                                <i class="fas fa-sign-out-alt me-2"></i> Logout
+                                            </button>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <button class="text-dark bg-danger nav-link ml-1 mt-1" type="button"
+                                                role="tab" (click)="deleteAccount()">
+                                                <i class="fas fa-trash me-2"></i> Delete Account
+                                            </button>
+                                        </li>
+                                    </ul>
+
+                                    <!-- Profile Section Start -->
+                                    <div class="tab-content pt-4" id="profileTabContent">
+                                        <div class="tab-pane fade show active" id="overview-tab-pane" role="tabpanel"
+                                            aria-labelledby="overview-tab" tabindex="0">
+                                            <form (submit)="updateAdmin()">
+                                                <div class="row g-0">
+                                                    <div
+                                                        class="col-5 col-md-3 bg-light border-bottom border-white border-3">
+                                                        <div class="p-2 pt-4"> <i class="fas fa-user me-2"></i>Name :
+                                                        </div>
+                                                    </div>
+                                                    <div
+                                                        class="col-7 col-md-9 bg-light border-start border-bottom border-white border-3">
+                                                        <div class="p-2">
+                                                            <input type="text" id="admin_name" name="admin_name"
+                                                                [(ngModel)]="formData.admin_name" class="form-control"
+                                                                required />
+                                                        </div>
+                                                    </div>
+
+                                                    <div
+                                                        class="col-5 col-md-3 bg-light border-bottom border-white border-3">
+                                                        <div class="p-2 pt-3"><i class="fas fa-phone me-2"></i>Mobile :
+                                                        </div>
+                                                    </div>
+                                                    <div
+                                                        class="col-7 col-md-9 bg-light border-start border-bottom border-white border-3">
+                                                        <div class="p-2">
+                                                            <input type="text" id="admin_mobile" name="admin_mobile"
+                                                                [(ngModel)]="formData.admin_mobile" class="form-control"
+                                                                required />
+                                                        </div>
+                                                    </div>
+
+                                                    <div
+                                                        class="col-5 col-md-3 bg-light border-bottom border-white border-3">
+                                                        <div class="p-2 pt-3"><i class="fas fa-envelope me-2"></i>Email
+                                                            : </div>
+                                                    </div>
+                                                    <div
+                                                        class="col-7 col-md-9 bg-light border-start border-bottom border-white border-3">
+                                                        <div class="p-2">
+                                                            <input type="email" id="admin_email" name="admin_email"
+                                                                [(ngModel)]="formData.admin_email" class="form-control"
+                                                                required />
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-12 mt-4">
+                                                        <button type="submit" class="btn btn-warning px-4 py-2">
+                                                            <i class="fas fa-save me-2"></i> Update Profile
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+
+                                        <!-- Password Section -->
+                                        <div class="tab-pane fade" id="password-tab-pane" role="tabpanel"
+                                            aria-labelledby="password-tab" tabindex="0">
+                                            <form (ngSubmit)="changePass()">
+                                                <!-- Email & Send OTP Btn -->
+                                                <div class="col-md-12 row" *ngIf="!otpSent">
+                                                    <div class="col-md-4">
+                                                        <label for="email" class="mt-3 form-label">Email</label>
+                                                    </div>
+                                                    <div class="col-md-8">
+                                                        <input type="email" name="user_email"
+                                                            [(ngModel)]="formData.admin_email" class="form-control"
+                                                            required>
+                                                        <button type="button" (click)="sendOtp()"
+                                                            class="btn btn-primary mt-2">
+                                                            <i class="fas fa-paper-plane me-2"></i>Get OTP</button>
+                                                    </div>
+                                                </div>
+
+                                                <!-- OTP Field & Verify OTP Btn -->
+                                                <div *ngIf="otpSent && !otpVerified" class="col-md-12 row">
+                                                    <div class="col-md-4">
+                                                        <label for="otp" class="mt-3 form-label">OTP</label>
+                                                    </div>
+                                                    <div class="col-md-8">
+                                                        <input type="text" name="otp" [(ngModel)]="formData.otp"
+                                                            class="form-control" required>
+                                                        <button type="button" (click)="verifyOtp()"
+                                                            class="btn btn-success mt-2">
+                                                            <i class="fas fa-check-circle me-2"></i>Verify OTP</button>
+                                                    </div>
+                                                </div>
+                                                <div class="row gy-3 gy-xxl-4" *ngIf="otpVerified">
+
+                                                    <div class="col-md-12 row">
+                                                        <div class="col-md-4">
+                                                            <label for="new_password" class="mt-3 form-label">
+                                                                <i class="fas fa-key me-2"></i>New Password
+                                                            </label>
+                                                        </div>
+                                                        <div class="col-md-8">
+                                                            <input type="password" class="form-control"
+                                                                id="new_password" name="new_password"
+                                                                [(ngModel)]="formData.new_password">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12 row">
+                                                        <div class="col-md-4">
+                                                            <label for="confirm_password" class="mt-3 form-label">
+                                                                <i class="fas fa-check-circle me-2"></i>Confirm Password
+                                                            </label>
+                                                        </div>
+                                                        <div class="col-md-8">
+                                                            <input type="password" class="form-control"
+                                                                id="confirm_password" name="confirm_password"
+                                                                [(ngModel)]="formData.confirm_password">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12 mt-4">
+                                                        <button type="submit" class="btn btn-danger px-4 py-2">
+                                                            <i class="fas fa-lock me-2"></i> Reset Password
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </form>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</body>
+
+
+
+
+
+
+
+
+
+
+
+<!-- <div class="container mt-5">
+    <div class="col-md-12 ">
+        <form #adminForm="ngForm" (ngSubmit)="updateProfile()" enctype="multipart/form-data">
+            <div class="row"> -->
+<!-- Profile Image Section -->
+<!-- <div class="col-md-4 text-center">
+                    <div class="profile-img">
+                        <ng-container *ngIf="adminDetails?.admin_profile; else initialsTemplate">
+                            <img [src]="'http://localhost:1000/uploads/' + adminDetails?.admin_profile"
+                                alt="User Profile" class="img-fluid rounded-circle border"
+                                style="height: 250px; width: 250px;">
+                        </ng-container>
+                        <ng-template #initialsTemplate>
+                            <div class="img-fluid rounded-circle border d-flex justify-content-center align-items-center"
+                                style="height: 250px; width: 250px;">
+                                <h1 style="font-size: 100px; letter-spacing: 10px;">{{
+                                    getInitials(adminDetails?.admin_name) }}</h1>
+                            </div>
+                        </ng-template>
+                        <div class="file btn btn-primary mt-2">
+                            Change Photo
+                            <input type="file" id="admin_profile" (change)="onFileChange($event)" name="admin_profile"
+                                class="form-control" />
+                        </div>
+                    </div>
+                </div> -->
+<!-- User Info Section -->
+<!-- <div class="col-md-6">
+                    <div class="profile-head">
+                        <div class="form-group mb-3">
+                            <label for="admin_name">Name:</label>
+                            <input type="text" id="admin_name" name="admin_name" class="form-control"
+                                [(ngModel)]="adminProfile.admin_name" #admin_name="ngModel" />
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="admin_mobile">Mobile Number:</label>
+                            <input type="text" id="admin_mobile" name="admin_mobile" class="form-control"
+                                [(ngModel)]="adminProfile.admin_mobile" #admin_mobile="ngModel" />
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="admin_email">Email:</label>
+                            <input type="email" id="admin_email" name="admin_email" class="form-control"
+                                [(ngModel)]="adminProfile.admin_email" #admin_email="ngModel" />
+                        </div>
+                        <div class="form-group mb-3" id="hideDiv" *ngIf="isDivVisible">
+                            <label for="old_password">Old Password:</label>
+                            <input type="password" id="old_password" name="old_password" class="form-control"
+                                [(ngModel)]="adminProfile.old_password" #old_password="ngModel" required />
+                        </div>
+                        <div class="form-group mb-3" id="hideDiv" *ngIf="isDivVisible">
+                            <label for="new_password">New Password:</label>
+                            <input type="password" id="new_password" name="new_password" class="form-control"
+                                [(ngModel)]="adminProfile.new_password" #new_password="ngModel" required />
+                        </div>
+                    </div>
+                </div> -->
+<!-- Action Buttons -->
+<!-- <div class="col-md-2 text-center d-flex flex-column justify-content-center">
+                    <button type="button" class="btn btn-success mb-2" (click)="updateShow_hide()"
+                        *ngIf="isBtnVisible"><i class="fas fa-edit"></i> Update Profile</button>
+                    <button type="submit" class="btn btn-success mb-2" *ngIf="isDivVisible"><i class="fas fa-edit"></i>
+                        Update Profile</button>
+                    <button type="button" class="btn btn-danger mb-2" (click)="logout()"><i
+                            class="fas fa-sign-out-alt"></i> LogOut</button>
+                    <button type="button" class="btn btn-danger mb-2" (click)="deleteAccount()"><i
+                            class="fas fa-trash-alt"></i> Delete A/c</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div> -->

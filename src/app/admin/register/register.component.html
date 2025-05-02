@@ -1,0 +1,258 @@
+<body>
+    <div class="register-wrapper">
+        <div class="register-container">
+            <!-- Floating background elements -->
+            <div class="floating-bg bg-1"></div>
+            <div class="floating-bg bg-2"></div>
+
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="register-card animate__animated animate__fadeInUp">
+                        <!-- Register Header -->
+                        <div class="register-header">
+                            <h1 class="text-gradient">Create Admin Account</h1>
+                            <p>Secure access to Furni Admin Panel</p>
+                        </div>
+
+                        <!-- Register -->
+                        <div class="register-body">
+                            <!-- Steps Indicator -->
+                            <div class="step-indicator">
+                                <div class="step" [class.active]="currentStep === 1">1</div>
+                                <div class="step-line"></div>
+                                <div class="step" [class.active]="currentStep === 2">2</div>
+                            </div>
+
+                            <!-- Registration Form Section -->
+                            <div class="form-section" *ngIf="currentStep === 1">
+                                <form class="needs-validation" novalidate>
+                                    <div class="row">
+                                        <!-- Full Name -->
+                                        <div class="col-md-6 col-lg-4">
+                                            <div class="form-group delay-1">
+                                                <label class="form-label">Full Name</label>
+                                                <div class="input-group">
+                                                    <input class="form-control" [(ngModel)]="admin_name" id="admin_name"
+                                                        name="admin_name" required minlength="3" pattern="[A-Za-z ]+"
+                                                        placeholder="Enter your full name" #name="ngModel"
+                                                        [class.is-invalid]="name.invalid && (name.dirty || name.touched)" />
+                                                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                                    <div class="invalid-feedback" *ngIf="name.errors?.['required']">
+                                                        Full name is required
+                                                    </div>
+                                                    <div class="invalid-feedback"
+                                                        *ngIf="name.errors?.['minlength'] || name.errors?.['pattern']">
+                                                        Please enter a valid name (min 3 characters, letters only)
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Mobile Number -->
+                                        <div class="col-md-6 col-lg-4">
+                                            <div class="form-group delay-2">
+                                                <label class="form-label">Mobile Number</label>
+                                                <div class="input-group">
+                                                    <input class="form-control" [(ngModel)]="admin_mobile"
+                                                        id="admin_mobile" name="admin_mobile" required
+                                                        pattern="[0-9]{10}" maxlength="10"
+                                                        placeholder="Enter your mobile number" #mobile="ngModel"
+                                                        [class.is-invalid]="mobile.invalid && (mobile.dirty || mobile.touched)" />
+                                                    <span class="input-group-text"><i
+                                                            class="fas fa-mobile-alt"></i></span>
+                                                    <div class="invalid-feedback" *ngIf="mobile.errors?.['required']">
+                                                        Mobile number is required
+                                                    </div>
+                                                    <div class="invalid-feedback" *ngIf="mobile.errors?.['pattern']">
+                                                        Please enter a valid 10-digit mobile number
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Email -->
+                                        <div class="col-md-6 col-lg-4">
+                                            <div class="form-group delay-3">
+                                                <label class="form-label">Email Address</label>
+                                                <div class="input-group">
+                                                    <input class="form-control" [(ngModel)]="admin_email"
+                                                        id="admin_email" name="admin_email" required
+                                                        placeholder="Enter your email address"
+                                                        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+                                                        (input)="onEmailInput()" #email="ngModel"
+                                                        [class.is-invalid]="email.invalid && (email.dirty || email.touched)" />
+                                                    <span class="input-group-text"><i
+                                                            class="fas fa-envelope"></i></span>
+                                                    <div class="invalid-feedback" *ngIf="email.errors?.['required']">
+                                                        Email is required
+                                                    </div>
+                                                    <div class="invalid-feedback" *ngIf="email.errors?.['pattern']">
+                                                        Please enter a valid email address
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Password -->
+                                        <div class="col-md-6 col-lg-4">
+                                            <div class="form-group delay-4">
+                                                <label class="form-label">Password</label>
+                                                <div class="input-group">
+                                                    <input type="password" class="form-control"
+                                                        [(ngModel)]="admin_password" id="admin_password"
+                                                        name="admin_password" required minlength="8"
+                                                        placeholder="Create a password"
+                                                        pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                                                        #password="ngModel"
+                                                        [class.is-invalid]="password.invalid && (password.dirty || password.touched)" />
+                                                    <button type="button" class="toggle-password"
+                                                        (click)="togglePasswordVisibility('admin_password')">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
+                                                    <div class="invalid-feedback" *ngIf="password.errors?.['required']">
+                                                        Password is required
+                                                    </div>
+                                                    <div class="invalid-feedback"
+                                                        *ngIf="password.errors?.['pattern'] || password.errors?.['minlength']">
+                                                        Password must have 8+ chars, 1 uppercase, 1 lowercase, 1 number
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Confirm Password -->
+                                        <div class="col-md-6 col-lg-4">
+                                            <div class="form-group delay-5">
+                                                <label class="form-label">Confirm Password</label>
+                                                <div class="input-group">
+                                                    <input type="password" class="form-control"
+                                                        [(ngModel)]="confirmPassword" id="confirmPassword"
+                                                        name="confirmPassword" placeholder="Confirm your password"
+                                                        required #confirmPass="ngModel"
+                                                        [class.is-invalid]="(confirmPass.invalid || !passwordsMatch()) && (confirmPass.dirty || confirmPass.touched)" />
+                                                    <button type="button" class="toggle-password"
+                                                        (click)="togglePasswordVisibility('confirmPassword')">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
+                                                    <div class="invalid-feedback"
+                                                        *ngIf="confirmPass.errors?.['required']">
+                                                        Please confirm your password
+                                                    </div>
+                                                    <div class="invalid-feedback"
+                                                        *ngIf="!passwordsMatch() && confirmPass.value">
+                                                        Passwords do not match
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Secret Key -->
+                                        <div class="col-md-6 col-lg-4">
+                                            <div class="form-group delay-6">
+                                                <label class="form-label">
+                                                    Secret Key <span class="text-muted small">(Provided by Owner)</span>
+                                                </label>
+                                                <div class="input-group">
+                                                    <input type="password" class="form-control" [(ngModel)]="secret_key"
+                                                        id="secret_key" name="secret_key" required minlength="8"
+                                                        placeholder="Enter the secret key" #secretKey="ngModel"
+                                                        [class.is-invalid]="secretKey.invalid && (secretKey.dirty || secretKey.touched)" />
+                                                    <button type="button" class="toggle-password"
+                                                        (click)="togglePasswordVisibility('secret_key')">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
+                                                    <div class="invalid-feedback"
+                                                        *ngIf="secretKey.errors?.['required']">
+                                                        Secret key is required
+                                                    </div>
+                                                    <div class="invalid-feedback"
+                                                        *ngIf="secretKey.errors?.['minlength']">
+                                                        Secret key must be at least 8 characters
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-4">
+                                        <div class="col-12 text-center">
+                                            <button type="button" class="btn-register" (click)="validateStep1()">
+                                                <i class="fas fa-arrow-right me-2"></i> Continue to Verification
+                                            </button>
+                                        </div>
+
+                                        <div class="col-12 text-center mt-3">
+                                            <span class="text-muted small">Already Registered?</span>
+                                            <a routerLink="/admin/login" class="login-link ms-1">
+                                                Login Here
+                                            </a>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <!-- OTP Verification Section -->
+                            <div class="form-section" *ngIf="currentStep === 2">
+                                <div class="otp-section">
+                                    <h4 class="animate__animated animate__fadeInDown">Verify Your Email</h4>
+                                    <p class="animate__animated animate__fadeInUp">We've sent a 6-digit code to
+                                        <strong>{{admin_email}}</strong>
+                                    </p>
+
+                                    <div class="otp-input-group">
+                                        <input type="text" class="otp-input animate__animated animate__bounceIn"
+                                            maxlength="1" pattern="[0-9]" style="animation-delay: 0.1s;"
+                                            [(ngModel)]="otp[0]" name="otp1" #otp1="ngModel"
+                                            (keyup)="moveToNext(1, $event)">
+                                        <input type="text" class="otp-input animate__animated animate__bounceIn"
+                                            maxlength="1" pattern="[0-9]" style="animation-delay: 0.2s;"
+                                            [(ngModel)]="otp[1]" name="otp2" #otp2="ngModel"
+                                            (keyup)="moveToNext(2, $event)">
+                                        <input type="text" class="otp-input animate__animated animate__bounceIn"
+                                            maxlength="1" pattern="[0-9]" style="animation-delay: 0.3s;"
+                                            [(ngModel)]="otp[2]" name="otp3" #otp3="ngModel"
+                                            (keyup)="moveToNext(3, $event)">
+                                        <input type="text" class="otp-input animate__animated animate__bounceIn"
+                                            maxlength="1" pattern="[0-9]" style="animation-delay: 0.4s;"
+                                            [(ngModel)]="otp[3]" name="otp4" #otp4="ngModel"
+                                            (keyup)="moveToNext(4, $event)">
+                                        <input type="text" class="otp-input animate__animated animate__bounceIn"
+                                            maxlength="1" pattern="[0-9]" style="animation-delay: 0.5s;"
+                                            [(ngModel)]="otp[4]" name="otp5" #otp5="ngModel"
+                                            (keyup)="moveToNext(5, $event)">
+                                        <input type="text" class="otp-input animate__animated animate__bounceIn"
+                                            maxlength="1" pattern="[0-9]" style="animation-delay: 0.6s;"
+                                            [(ngModel)]="otp[5]" name="otp6" #otp6="ngModel">
+                                    </div>
+
+                                    <div class="resend-otp">
+                                        <p>Didn't receive code? <a href="#" (click)="resendOTP($event)">Resend OTP</a>
+                                        </p>
+                                    </div>
+
+                                    <div class="row mt-4">
+                                        <div class="col-12 text-center">
+                                            <button type="button" class="btn-register animate__animated animate__fadeIn"
+                                                style="animation-delay: 0.7s;" (click)="validateOTP()"
+                                                [disabled]="loading">
+                                                <i class="fas fa-check-circle me-2"></i> Verify & Complete Registration
+                                            </button>
+                                        </div>
+
+                                        <div class="col-12 text-center mt-3">
+                                            <button type="button" class="text-muted small bg-transparent border-0"
+                                                (click)="backToStep(1)">
+                                                <i class="fas fa-arrow-left me-1"></i> Back to Registration
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
